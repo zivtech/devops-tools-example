@@ -9,11 +9,16 @@ class { 'jenkins':
 
 require 'apt'
 
-include '::rabbitmq'
+class { '::rabbitmq':
+  service_manage => true,
+  port           => 5672,
+  admin_enable   => true,
+}
 
+/*
 rabbitmq_user { 'sensu':
   admin             => true,
-  password          => '',
+  password          => 'correct-horse-battery-staple',
   provider          => 'rabbitmqctl',
   require           => Service['rabbitmq-server'],
 }
@@ -24,14 +29,22 @@ rabbitmq_vhost { '/sensu':
   require  => Service['rabbitmq-server'],
 }
 
+rabbitmq_user_permissions { 'sensu@sensu':
+  configure_permission => '.*',
+  read_permission      => '.*',
+  write_permission     => '.*',
+  require  => [
+    Service['rabbitmq-server'],
+    Rabbitmq_user['sensu'],
+    Rabbitmq_vhost['sensu'],
+  ],
+}
+*/
+
 rabbitmq_vhost { 'sensu':
   ensure => present,
   provider => 'rabbitmqctl',
-  require  => Service['rabbitmq-server'],
-}
-
-rabbitmq_vhost { 'myhost':
-    ensure => present,
+# require  => Service['rabbitmq-server'],
 }
 
 package { 'ruby-json':
