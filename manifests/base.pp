@@ -10,9 +10,11 @@ class { 'jenkins':
 require 'apt'
 
 class { '::rabbitmq':
-  service_manage => true,
-  port           => 5672,
-  admin_enable   => true,
+  service_manage    => true,
+  port              => 5672,
+  admin_enable      => true,
+  delete_guest_user => false,
+
 }
 
 /*
@@ -39,13 +41,13 @@ rabbitmq_user_permissions { 'sensu@sensu':
     Rabbitmq_vhost['sensu'],
   ],
 }
-*/
-
 rabbitmq_vhost { 'sensu':
   ensure => present,
   provider => 'rabbitmqctl',
 # require  => Service['rabbitmq-server'],
 }
+*/
+
 
 package { 'ruby-json':
   ensure => 'installed',
@@ -72,6 +74,8 @@ class { 'sensu':
   manage_user       => true,
   api               => true,
   client_address    => $::ipaddress_eth1,
+  # For whatever reason localhost was choking on a fresh install on 14.04.
+  redis_host        => '127.0.0.1',
 }
 
 sensu::handler { 'default':
