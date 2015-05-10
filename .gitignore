@@ -2,3 +2,4 @@ modules
 .tmp
 .vagrant
 .librarian
+*.sw*
