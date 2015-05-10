@@ -121,3 +121,12 @@ service { 'uchiwa':
     Package['uchiwa']
   ]
 }
+
+# This is busted:
+class { 'graphite': }
+
+class { 'logstash':
+  manage_repo     => true,
+  install_contrib => true,
+  repo_version    => '1.4',
+}
