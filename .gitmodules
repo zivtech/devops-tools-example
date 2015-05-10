@@ -1,0 +1,3 @@
+[submodule "custom-modules/sensu_community_plugins/files"]
+	path = custom-modules/sensu_community_plugins/files
+	url = https://github.com/sensu/sensu-community-plugins.git
