@@ -67,6 +67,8 @@ class { 'sensu':
   rabbitmq_password => 'correct-horse-battery-staple',
   rabbitmq_host     => '127.0.0.1',
   rabbitmq_vhost    => '/sensu',
+  use_embedded_ruby        => true,
+  sensu_plugin_version     => '1.1.0',
   subscriptions     => 'all',
   install_repo      => true,
   server            => true,
@@ -76,10 +78,47 @@ class { 'sensu':
   client_address    => $::ipaddress_eth1,
   # For whatever reason localhost was choking on a fresh install on 14.04.
   redis_host        => '127.0.0.1',
+  plugins           => [
+    'puppet:///modules/sensu_community_plugins/plugins/system/check-disk.rb',
+    'puppet:///modules/sensu_community_plugins/plugins/system/check-cpu.rb',
+    'puppet:///modules/sensu_community_plugins/plugins/system/check-ram.rb',
+    'puppet:///modules/sensu_community_plugins/plugins/system/check-load.rb',
+    'puppet:///modules/sensu_community_plugins/plugins/system/check-swap-percentage.sh',
+  ],
 }
 
 sensu::handler { 'default':
   command => 'echo > /tmp/sensu-notifications.log',
+}
+
+sensu::check { 'load':
+  command     => '/etc/sensu/plugins/check-load.rb',
+  subscribers => 'all',
+  standalone  => false,
+}
+
+sensu::check { 'cpu':
+  command     => '/etc/sensu/plugins/check-cpu.rb',
+  subscribers => 'all',
+  standalone  => false,
+}
+
+sensu::check { 'ram':
+  command     => '/etc/sensu/plugins/check-ram.rb',
+  subscribers => 'all',
+  standalone  => false,
+}
+
+sensu::check { 'disk':
+  command     => '/etc/sensu/plugins/check-disk.rb',
+  subscribers => 'all',
+  standalone  => false,
+}
+
+sensu::check { 'swap-percent':
+  command     => '/etc/sensu/plugins/check-swap-percentage.sh',
+  subscribers => 'all',
+  standalone  => false,
 }
 
 package { 'uchiwa':
@@ -127,6 +166,9 @@ class { 'graphite': }
 
 class { 'logstash':
   manage_repo     => true,
-  install_contrib => true,
   repo_version    => '1.4',
+}->
+
+package { 'logstash-contrib':
+  ensure => 'installed',
 }
