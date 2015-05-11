@@ -62,12 +62,12 @@ service { 'redis-server':
   enable => true,
 }->
    
+package { 'ruby-dev': }->
 
 class { 'sensu':
   rabbitmq_password => 'correct-horse-battery-staple',
   rabbitmq_host     => '127.0.0.1',
   rabbitmq_vhost    => '/sensu',
-  use_embedded_ruby        => true,
   sensu_plugin_version     => '1.1.0',
   subscriptions     => 'all',
   install_repo      => true,
