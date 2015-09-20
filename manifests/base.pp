@@ -85,6 +85,7 @@ class { 'sensu':
     'puppet:///modules/sensu_community_plugins/plugins/system/check-load.rb',
     'puppet:///modules/sensu_community_plugins/plugins/system/check-swap-percentage.sh',
   ],
+  use_embedded_ruby => true,
 }
 
 sensu::handler { 'default':
