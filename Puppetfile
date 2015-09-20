@@ -6,7 +6,7 @@ forge "https://forgeapi.puppetlabs.com"
 mod 'puppetlabs-vcsrepo'
 mod 'puppetlabs-gcc'
 
-mod 'puppetlabs-rabbitmq'
+mod 'puppetlabs-rabbitmq', '5.2.3'
 mod 'sensu-sensu'
 mod 'dwerder-graphite'
 
