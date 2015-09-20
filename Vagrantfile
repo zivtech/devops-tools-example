@@ -38,6 +38,7 @@ Vagrant.configure('2') do |config|
     end
   end
 
+  config.vm.provision :shell, inline: "/bin/sed -i '/templatedir/d' /etc/puppet/puppet.conf"
   config.vm.provision :puppet do |puppet|
     puppet.module_path = [
       'modules',
