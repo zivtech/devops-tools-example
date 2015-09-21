@@ -158,9 +158,6 @@ service { 'uchiwa':
   ]
 }
 
-# This is busted:
-class { 'graphite': }
-
 class { 'logstash':
   manage_repo     => true,
   repo_version    => '1.4',
@@ -168,4 +165,15 @@ class { 'logstash':
 
 package { 'logstash-contrib':
   ensure => 'installed',
+}
+
+class {'influxdb::server':
+}
+
+class { 'grafana':
+  cfg => {
+    server => {
+      http_port => 8080,
+    },
+  },
 }
