@@ -18,6 +18,7 @@ mod 'lesaux-kibana4'
 mod 'elasticsearch-logstash'
 mod 'elasticsearch-elasticsearch'
 
+mod 'puppetlabs-git'
 mod 'zivtech-webadmin',
   :git => "git://github.com/zivtech/puppet-webadmin.git",
   :ref => 'master'

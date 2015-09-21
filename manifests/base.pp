@@ -1,11 +1,12 @@
 
 /*
-
 class { 'jenkins':
   config_hash => {'HTTP_PORT' => {'value' => '8092'}},
   configure_firewall => false,
 }
 */
+
+include webadmin
 
 require 'apt'
 
