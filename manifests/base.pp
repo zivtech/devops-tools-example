@@ -15,7 +15,6 @@ class { '::rabbitmq':
   port              => 5672,
   admin_enable      => true,
   delete_guest_user => false,
-
 }
 
 rabbitmq_user { 'sensu':
@@ -78,15 +77,64 @@ class { 'sensu':
     'puppet:///modules/sensu_community_plugins/plugins/system/check-ram.rb',
     'puppet:///modules/sensu_community_plugins/plugins/system/check-load.rb',
     'puppet:///modules/sensu_community_plugins/plugins/system/check-swap-percentage.sh',
+    'puppet:///modules/sensu_community_plugins/plugins/system/load-metrics.rb',
+    'puppet:///modules/sensu_community_plugins/plugins/system/memory-metrics-percent.rb',
+    'puppet:///modules/sensu_community_plugins/plugins/system/disk-usage-metrics.rb',
   ],
   use_embedded_ruby => true,
 }
 
+
 sensu::subscription { 'all': }
 
-
 sensu::handler { 'default':
-  command => 'echo > /tmp/sensu-notifications.log',
+  command => 'tee /tmp/sensu-notifications.log',
+}
+
+# We can't use sensu embedded because gems can't be installed inside sensu embedded if they
+# have the same name as a package that is being required.
+exec { '/opt/sensu/embedded/bin/gem install influxdb':
+  unless => '/opt/sensu/embedded/bin/gem list -i influxdb',
+}->
+
+sensu::handler { 'influx':
+  command => 'metrics-influxdb.rb',
+  config  => {
+    server   => '127.0.0.1',
+    port     => 8086,
+    username => 'root',
+    password => 'root',
+    database => 'sensu',
+  },
+}
+
+# Provided by the new and *AWESOME* http://sensu-plugins.io.
+# Use this method if you can - you install a gem in the embedded
+# ruby provided by sensu.
+package { 'sensu-plugins-influxdb':
+  provider => 'sensu_gem',
+}->
+
+sensu::check { 'disk-usage-metrics':
+  type        => 'metric',
+  command     => '/etc/sensu/plugins/disk-usage-metrics.rb',
+  subscribers => 'all',
+  standalone  => false,
+  handlers    => 'influx',
+}
+
+sensu::check { 'memory-metrics':
+  command     => '/etc/sensu/plugins/memory-metrics-percent.rb',
+  type        => 'metric',
+  subscribers => 'all',
+  handlers    => 'influx',
+}
+
+sensu::check { 'load-metrics':
+  command     => '/etc/sensu/plugins/load-metrics.rb',
+  type        => 'metric',
+  subscribers => 'all',
+  handlers    => 'influx',
 }
 
 sensu::check { 'load':
@@ -195,7 +243,7 @@ class {'influxdb::server':
 class { 'grafana':
   cfg => {
     server => {
-      http_port => 8080,
+      http_port => 8081,
     },
   },
 }
