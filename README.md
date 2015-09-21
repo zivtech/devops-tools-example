@@ -9,7 +9,7 @@ clients.
 Once you have the VM up and running you should be able to connect to:
 
   - [InfluxDB](https://influxdb.com/) on [port 8081](http://33.33.33.45:8083/) with username `root` and password `root`
-  - [Grafana](http://grafana.org/) on [port 8080](http://33.33.33.45:8080/) with username `admin` and password `admin`
+  - [Grafana](http://grafana.org/) on [port 8081](http://33.33.33.45:8081/) with username `admin` and password `admin`
   - [Sensu's Uchiwa](https://uchiwa.io/) on [port 3000](http://33.33.33.45:3000)
   - [RabbitMQ's admin interface](https://www.rabbitmq.com/) on [port 15672](http://33.33.33.45:15672) with username `sensu` and password `boo` 
   - [Kibana](https://www.elastic.co/products/kibana) on [port 5601](http://33.33.33.45:5601/)
