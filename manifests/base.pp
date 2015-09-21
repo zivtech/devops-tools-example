@@ -210,7 +210,11 @@ service { 'uchiwa':
 class { 'logstash':
   manage_repo     => true,
   repo_version    => '1.5',
-}->
+}
+
+logstash::configfile { 'main':
+  source => 'puppet:///modules/logstash_config/logstash.conf',
+}
 
 package { 'logstash-contrib':
   ensure => 'installed',

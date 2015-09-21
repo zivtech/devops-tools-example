@@ -1,0 +1,2 @@
+class logstash_config {
+}
