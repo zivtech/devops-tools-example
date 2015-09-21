@@ -13,7 +13,9 @@ Vagrant.configure('2') do |config|
   #config.vm.network :private_network, ip: params[:private_ip]
   config.vm.network :private_network, ip: '33.33.33.45'
 
-  config.vm.box = 'puppetlabs/ubuntu-14.04-64-puppet'
+  config.vm.box = 'puppetlabs/ubuntu-14.04-64-puppet-1.0.0'
+  config.vm.box_url = 'https://atlas.hashicorp.com/puppetlabs/boxes/ubuntu-14.04-64-puppet/versions/1.0.0/providers/virtualbox.box'
+
 
   config.ssh.forward_agent = true
 
