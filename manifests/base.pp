@@ -160,12 +160,33 @@ service { 'uchiwa':
 
 class { 'logstash':
   manage_repo     => true,
-  repo_version    => '1.4',
+  repo_version    => '1.5',
 }->
 
 package { 'logstash-contrib':
   ensure => 'installed',
 }
+
+class { 'elasticsearch':
+  manage_repo  => true,
+  repo_version => '1.5',
+  #java_install => true,
+}
+
+elasticsearch::instance { 'es-01':
+  require => [
+    Class['elasticsearch'],
+    Package['elasticsearch'],
+  ],
+}
+
+elasticsearch::plugin{'mobz/elasticsearch-head':
+  instances  => 'es-01'
+}
+
+class { 'kibana4':
+}
+
 
 class {'influxdb::server':
 }
