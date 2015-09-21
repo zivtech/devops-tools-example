@@ -17,10 +17,9 @@ class { '::rabbitmq':
 
 }
 
-/*
 rabbitmq_user { 'sensu':
   admin             => true,
-  password          => 'correct-horse-battery-staple',
+  password          => 'boo',
   provider          => 'rabbitmqctl',
   require           => Service['rabbitmq-server'],
 }
@@ -41,17 +40,11 @@ rabbitmq_user_permissions { 'sensu@sensu':
     Rabbitmq_vhost['sensu'],
   ],
 }
+
 rabbitmq_vhost { 'sensu':
   ensure => present,
   provider => 'rabbitmqctl',
-# require  => Service['rabbitmq-server'],
 }
-*/
-
-
-package { 'ruby-json':
-  ensure => 'installed',
-}->
 
 package { 'redis-server':
   ensure => 'installed',
@@ -65,9 +58,9 @@ service { 'redis-server':
 package { 'ruby-dev': }->
 
 class { 'sensu':
-  rabbitmq_password => 'correct-horse-battery-staple',
+  rabbitmq_password => 'boo',
   rabbitmq_host     => '127.0.0.1',
-  rabbitmq_vhost    => '/sensu',
+  rabbitmq_vhost    => 'sensu',
   sensu_plugin_version     => '1.1.0',
   subscriptions     => 'all',
   install_repo      => true,
@@ -87,6 +80,9 @@ class { 'sensu':
   ],
   use_embedded_ruby => true,
 }
+
+sensu::subscription { 'all': }
+
 
 sensu::handler { 'default':
   command => 'echo > /tmp/sensu-notifications.log',
@@ -137,8 +133,8 @@ file { '/etc/sensu/uchiwa.json':
       "host": "localhost",
       "port": 4567,
       "timeout": 5,
-      "user": "admin",
-      "pass": "secret"
+      "user": "sensu",
+      "pass": "boo"
     }
   ],
   "uchiwa": {
