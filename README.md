@@ -1,3 +1,4 @@
+
 # Drupal Devops Example
 
 An example vagrant environment that demonstrates how to setup a number of services
@@ -25,9 +26,15 @@ on windows.
 download the source code zip or tarball by accident).*
 
 ````bash
-
 git clone --recursive https://github.com/zivtech/devops-tools-example.git
 cd devops-tools-example
 librarian-puppet install
 vagrant up
 ````
+
+## Setup
+
+In order to get data into influxdb from sensu you will need to log into InfluxDB (see above) and
+create a user called database called `sensu` by running `CREATE DATABASE sensu` at the command
+field in the web window.
+
