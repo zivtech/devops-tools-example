@@ -52,7 +52,7 @@ service { 'redis-server':
   ensure => 'running',
   enable => true,
 }->
-   
+
 package { 'ruby-dev': }->
 
 class { 'sensu':
@@ -204,7 +204,7 @@ service { 'uchiwa':
     Package['uchiwa']
   ]
 }
-
+/*
 class { 'logstash':
   manage_repo     => true,
   repo_version    => '1.5',
@@ -217,7 +217,7 @@ logstash::configfile { 'main':
 package { 'logstash-contrib':
   ensure => 'installed',
 }
-
+*/
 class { 'elasticsearch':
   manage_repo  => true,
   repo_version => '1.5',
