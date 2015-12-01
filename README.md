@@ -28,6 +28,7 @@ download the source code zip or tarball by accident).*
 ````bash
 git clone --recursive https://github.com/zivtech/devops-tools-example.git
 cd devops-tools-example
+git submodule update --init
 librarian-puppet install
 vagrant up
 ````
