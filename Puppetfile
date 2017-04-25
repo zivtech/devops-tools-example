@@ -6,22 +6,10 @@ forge 'https://forgeapi.puppetlabs.com'
 mod 'sensu-sensu'
 mod 'puppetlabs-rabbitmq'
 mod 'rtyler-jenkins'
-# mod 'puppetlabs-vcsrepo'
-# mod 'puppetlabs-gcc'
-
-# mod 'puppetlabs-rabbitmq', '5.2.3'
-# mod 'sensu-sensu'
-
-# mod 'bfraser-grafana'
-# mod 'golja-influxdb'
-
-# mod 'rtyler-jenkins'
+mod 'jfryman-nginx'
+mod 'golja-influxdb'
+mod 'bfraser-grafana'
 
 # mod 'lesaux-kibana4'
 # mod 'elasticsearch-logstash'
 # mod 'elasticsearch-elasticsearch'
-
-# mod 'puppetlabs-git'
-# mod 'zivtech-webadmin',
-#   :git => "git://github.com/zivtech/puppet-webadmin.git",
-#   :ref => 'master'
