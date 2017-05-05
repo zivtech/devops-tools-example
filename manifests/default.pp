@@ -65,7 +65,7 @@ class { '::sensu':
 file { '/var/log/sensu-default-handler.log':
   ensure => 'file',
   owner  => 'sensu',
-  mode   => '0555'
+  mode   => '0775'
 }->
 
 sensu::handler { 'default':
@@ -75,6 +75,7 @@ sensu::handler { 'default':
 
 # An example handler just for this host.
 sensu::subscription { 'sensu-test': }
+
 # A super simple check for servers with the above subscription.
 sensu::check { 'success':
   command     => 'echo "Something went right" && /bin/true',
@@ -82,8 +83,29 @@ sensu::check { 'success':
   subscribers => 'sensu-test',
 }
 
-sensu::check { 'failure':
+sensu::check { 'minor-failing':
+  ensure => 'absent',
+  command => 'blah',
+}
+
+sensu::check { 'minor-warning':
   command     => 'echo "Something went wrong" && /bin/false',
+  handlers    => 'default',
+  subscribers => 'sensu-test',
+}
+
+sensu::check { 'major-failing-check':
+  command     => 'echo "Something went very wrong" && return 2',
+  handlers    => 'default',
+  subscribers => 'sensu-test',
+}
+
+file { '/var/log/some_service.log':
+  content => 'looks good',
+  mode    => '0777',
+}->
+sensu::check { 'check-some-service':
+  command     => 'grep -qv broken /var/log/some_service.log',
   handlers    => 'default',
   subscribers => 'sensu-test',
 }
